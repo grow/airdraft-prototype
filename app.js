@@ -33,12 +33,19 @@ app.post('/:owner/:name/tree/:branch/:filePath(*)', function(req, res) {
 
   var commitMessage = req.body.commitMessage || 'Updated via editor prototype.';
   var sha = req.body.sha;
-  var yamlAsText = req.body.yamlAsText;
-  var markdownAsText = req.body.markdownAsText;
-  var tempMatter = matter('---\n' + yamlAsText + '\n---\n');
-  var contentToWrite = matter.stringify(markdownAsText, tempMatter.data);
 
-  console.log('Saving...');
+  // Handle markdown with frontmatter.
+  if (req.body.markdownAsText) {
+    var yamlAsText = req.body.yamlAsText;
+    var markdownAsText = req.body.markdownAsText;
+    var tempMatter = matter('---\n' + yamlAsText + '\n---\n');
+    var contentToWrite = matter.stringify(markdownAsText, tempMatter.data);
+  } else {
+  // Handle yaml only.
+    var contentToWrite = req.body.yamlAsText;
+  }
+
+  console.log('Saving -> ' + repoName + '/' + branch + '/' + path);
   repo.updateContents(
       path, commitMessage, contentToWrite, sha, branch, function(err, body, headers) {
     repo.contents(path, branch, function(err, body, headers, foo) {
@@ -48,16 +55,20 @@ app.post('/:owner/:name/tree/:branch/:filePath(*)', function(req, res) {
         var b64content = body['content'];
         var content = b64decode(b64content);
         var sha = body['sha'];
-        var obj = matter(content, {excerpt: true});
         var params = {
           repoName: repoName,
-          status: 'Saved',
           sha: sha,
+          status: 'Saved',
           branch: branch,
-          dataAsText: JSON.stringify(obj.data),
-          path: path,
-          matter: obj
+          path: path
         };
+        if (path.endsWith('.md')) {
+          var obj = matter(content, {excerpt: true});
+          params.yamlAsText = obj.matter;
+          params.markdownAsText = obj.content;
+        } else {
+          params.yamlAsText = content;
+        }
         var template = handlebars.compile(templateContent);
         var html = template(params);
         res.send(html);
@@ -82,17 +93,19 @@ app.get('/:owner/:name/tree/:branch/:filePath(*)', function(req, res) {
       var b64content = body['content'];
       var content = b64decode(b64content);
       var sha = body['sha'];
-      // TODO: This doesn't work for YAML-only files. For YAML files disregard
-      // the frontmatter parser.
-      var obj = matter(content, {excerpt: true});
       var params = {
         repoName: repoName,
         sha: sha,
         branch: branch,
-        dataAsText: JSON.stringify(obj.data),
-        path: path,
-        matter: obj
+        path: path
       };
+      if (path.endsWith('.md')) {
+        var obj = matter(content, {excerpt: true});
+        params.yamlAsText = obj.matter;
+        params.markdownAsText = obj.content;
+      } else {
+        params.yamlAsText = content;
+      }
       var template = handlebars.compile(templateContent);
       var html = template(params);
       res.send(html);

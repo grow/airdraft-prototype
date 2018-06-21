@@ -41,10 +41,12 @@
     <br><br>
     <fieldset>
       <legend>yaml front matter</legend>
-      <textarea name="yamlAsText">{{matter.matter}}</textarea>
+      <textarea name="yamlAsText">{{yamlAsText}}</textarea>
     </fieldset>
-    <fieldset>
-      <legend>markdown</legend>
-      <textarea name="markdownAsText">{{matter.content}}</textarea>
-    </fieldset>
+    {{#if markdownAsText}}
+      <fieldset>
+        <legend>markdown</legend>
+        <textarea name="markdownAsText">{{markdownAsText}}</textarea>
+      </fieldset>
+    {{/if}}
   </form>
