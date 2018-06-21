@@ -1,0 +1,13 @@
+{
+  "name": "edit",
+  "main": "app.js",
+  "scripts": {
+    "run": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.16.3",
+    "gray-matter": "4.0.1",
+    "octonode": "0.9.2",
+    "sha1": "1.1.1"
+  }
+}
