@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>editor</title>
+<style>
+  body {
+    font-family: helvetica;
+    -webkit-font-aliasing: antialiased;
+  }
+  textarea {
+    font-family: monospace;
+    height: 60px;
+    padding: 5px;
+    font-size: 13px;
+    width: 1000px;
+  }
+  textarea[name="yamlAsText"],
+  textarea[name="markdownAsText"] {
+    height: 500px;
+  }
+  fieldset {
+    border: 1px solid #888;
+    margin-bottom: 30px;
+  }
+  .status {
+    padding: 5px 15px;
+    border-radius: 5px;
+    background: #efefef;
+    margin-bottom: 20px;
+  }
+</style>
+<body>
+  <h1>{{repoName}} : {{branch}} : {{path}}</h1>
+  <div class="status">
+    {{status}}
+  </div>
+  <form method="post" action="">
+    <input type="hidden" name="sha" value="{{sha}}">
+    <textarea placeholder="Commit message" name="commitMessage"></textarea>
+    <br>
+    <button type="submit">Save to GitHub</button>
+    <br><br>
+    <fieldset>
+      <legend>yaml front matter</legend>
+      <textarea name="yamlAsText">{{matter.matter}}</textarea>
+    </fieldset>
+    <fieldset>
+      <legend>markdown</legend>
+      <textarea name="markdownAsText">{{matter.content}}</textarea>
+    </fieldset>
+  </form>
