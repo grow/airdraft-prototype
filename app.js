@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 
-app.post('/:owner/:name/tree/:branch/:filePath(*)', function(req, res) {
+app.post('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
   var client = github.client(TOKEN);
   var repoName = req.params.owner + '/' + req.params.name
   var branch = req.params.branch;
@@ -79,7 +79,7 @@ app.post('/:owner/:name/tree/:branch/:filePath(*)', function(req, res) {
 });
 
 
-app.get('/:owner/:name/tree/:branch/:filePath(*)', function(req, res) {
+app.get('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
   var client = github.client(TOKEN);
   var repoName = req.params.owner + '/' + req.params.name
   var branch = req.params.branch;
