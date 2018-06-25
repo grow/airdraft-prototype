@@ -2,7 +2,7 @@
   "name": "edit",
   "main": "app.js",
   "scripts": {
-    "run": "node app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

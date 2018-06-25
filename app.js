@@ -31,6 +31,10 @@ app.post('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
   var path = req.params.filePath;
   var repo = client.repo(repoName);
 
+  if (req.params.owner != 'jeremydw' || req.params.name != 'growsdk.org') {
+    throw new Error('Forbidden.');
+  }
+
   var commitMessage = req.body.commitMessage || 'Updated via editor prototype.';
   var sha = req.body.sha;
 
@@ -86,6 +90,10 @@ app.get('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
   var path = req.params.filePath;
   var repo = client.repo(repoName);
 
+  if (req.params.owner != 'jeremydw' || req.params.name != 'growsdk.org') {
+    throw new Error('Forbidden.');
+  }
+
   repo.contents(path, branch, function(err, body, headers, foo) {
 
     // TODO: Pull this out so the code isn't repeated.
@@ -115,6 +123,8 @@ app.get('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
 });
 
 
-app.listen(3000, function () {
-  console.log('Listening on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, function () {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
 });
