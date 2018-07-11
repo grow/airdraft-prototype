@@ -1,33 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>editor</title>
-<style>
-  body {
-    font-family: helvetica;
-    -webkit-font-aliasing: antialiased;
-  }
-  textarea {
-    font-family: monospace;
-    height: 60px;
-    padding: 5px;
-    font-size: 13px;
-    width: 1000px;
-  }
-  textarea[name="yamlAsText"],
-  textarea[name="markdownAsText"] {
-    height: 500px;
-  }
-  fieldset {
-    border: 1px solid #888;
-    margin-bottom: 30px;
-  }
-  .status {
-    padding: 5px 15px;
-    border-radius: 5px;
-    background: #efefef;
-    margin-bottom: 20px;
-  }
-</style>
+<link rel="stylesheet" href="/css/editor.min.css">
 <body>
   <h1>{{repoName}} : {{branch}} : {{path}}</h1>
   <div class="status">
@@ -44,9 +18,10 @@
       <textarea name="yamlAsText">{{yamlAsText}}</textarea>
     </fieldset>
     {{#if markdownAsText}}
-      <fieldset>
-        <legend>markdown</legend>
-        <textarea name="markdownAsText">{{markdownAsText}}</textarea>
-      </fieldset>
+    <fieldset>
+      <legend>markdown</legend>
+      <textarea name="markdownAsText">{{markdownAsText}}</textarea>
+    </fieldset>
     {{/if}}
   </form>
+  <script src="/js/editor.min.js"></script>

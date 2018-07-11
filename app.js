@@ -22,6 +22,7 @@ var b64decode = function(content) {
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(express.static('dist'));
 
 
 app.post('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
