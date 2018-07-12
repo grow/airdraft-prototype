@@ -3,25 +3,34 @@
 <title>editor</title>
 <link rel="stylesheet" href="/css/editor.min.css">
 <body>
-  <h1>{{repoName}} : {{branch}} : {{path}}</h1>
-  <div class="status">
-    {{status}}
-  </div>
-  <form method="post" action="">
+  <h1>{{repoName}} ({{branch}})</h1>
+  <h2>{{path}}</h2>
+
+  {{#if status}}
+    <div class="status">
+      {{status}}
+    </div>
+  {{/if}}
+  <textarea class="hidden" id="config" name="config">{{config}}</textarea>
+  <form id="editorForm" method="post" action="">
     <input type="hidden" name="sha" value="{{sha}}">
-    <textarea placeholder="Commit message" name="commitMessage"></textarea>
-    <br>
-    <button type="submit">Save to GitHub</button>
-    <br><br>
     <fieldset>
-      <legend>yaml front matter</legend>
-      <textarea name="yamlAsText">{{yamlAsText}}</textarea>
+      <legend>Front Matter</legend>
+      <div id="frontmatter"></div>
+      <textarea class="hidden" id="yamlAsText" name="yamlAsText">{{yamlAsText}}</textarea>
     </fieldset>
     {{#if markdownAsText}}
-    <fieldset>
-      <legend>markdown</legend>
-      <textarea name="markdownAsText">{{markdownAsText}}</textarea>
-    </fieldset>
+      <fieldset>
+        <legend>Markdown Body</legend>
+        <div id="body"></div>
+        <textarea class="hidden" id="markdownAsText" name="markdownAsText">{{markdownAsText}}</textarea>
+      </fieldset>
     {{/if}}
+    <div>
+      <textarea placeholder="Commit message" name="commitMessage"></textarea>
+    </div>
+    <div>
+      <button type="submit">Commit to GitHub</button>
+    </div>
   </form>
   <script src="/js/editor.min.js"></script>
