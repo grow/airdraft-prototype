@@ -138,8 +138,9 @@ app.post('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
   console.log('Saving -> ' + repoName + '/' + branch + '/' + path);
   repo.updateContents(
     path, commitMessage, contentToWrite, sha, branch, function(err, body, headers) {
-    loadEditor(client, repoName, branch, path, res);
-  });
+      // TODO: Redirect or make it an ajax instead.
+      loadEditor(client, repoName, branch, path, res);
+    });
 });
 
 
