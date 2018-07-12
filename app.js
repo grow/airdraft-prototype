@@ -28,7 +28,7 @@ app.use(express.static('dist'));
 
 
 // Load a path and config, then render it.
-var loadEditor = (client, repoName, branch, path, res) => {
+var loadEditor = (client, repoName, branch, path, res, status) => {
   const repo = client.repo(repoName);
   if (repoName != 'jeremydw/growsdk.org') {
     throw new Error('Forbidden.');
@@ -96,6 +96,9 @@ var loadEditor = (client, repoName, branch, path, res) => {
         branch: branch,
         path: path
       };
+      if (status) {
+        params.status = status;
+      }
       if (path.endsWith('.md')) {
         var obj = matter(content, {excerpt: true});
         params.yamlAsText = obj.matter;
@@ -139,7 +142,7 @@ app.post('/:owner/:name/blob/:branch/:filePath(*)', function(req, res) {
   repo.updateContents(
     path, commitMessage, contentToWrite, sha, branch, function(err, body, headers) {
       // TODO: Redirect or make it an ajax instead.
-      loadEditor(client, repoName, branch, path, res);
+      loadEditor(client, repoName, branch, path, res, 'Saved.');
     });
 });
 
